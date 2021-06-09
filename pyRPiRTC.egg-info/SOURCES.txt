@@ -1,0 +1,9 @@
+README.md
+pyRPiRTC.py
+setup.py
+pyRPiRTC.egg-info/PKG-INFO
+pyRPiRTC.egg-info/SOURCES.txt
+pyRPiRTC.egg-info/dependency_links.txt
+pyRPiRTC.egg-info/top_level.txt
+scripts/ds1302_get_utc
+scripts/ds1302_set_utc
