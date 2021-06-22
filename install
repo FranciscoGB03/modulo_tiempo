@@ -1,0 +1,28 @@
+#!/bin/bash
+echo "instalacion de modulo de tiempo en raspberry"
+echo "Obtencion de los archivos requeridos"
+git clone https://github.com/FranciscoGB03/modulo_tiempo.git
+sudo mv modulo_tiempo /rasp
+chmod -R 777 /rasp
+cd /rasp
+echo "Instalacion de paquetes necesarios"
+sudo apt-get install python3-rpi.gpio
+echo "Instalacion de modulo"
+sudo python3 setup.py install
+echo "probando modulo"
+ds1302_get_utc
+echo "actualizando hora con google"
+sudo date -s  "$(curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')"
+sudo ds1302_set_utc
+ds1302_get_utc
+echo "agregando a rc.local para sincronizacion de hora"
+sudo sed -i 's/exit 0/sudo date -s \`ds1302_get_utc\`/g' /etc/rc.local
+sudo echo "exit 0" >> /etc/rc.local
+echo "contenido de rc.local"
+more /etc/rc.local
+echo "dando derechos de ejecucion"
+sudo chmod 777 /etc/rc.local
+echo "actualizando hora"
+cd /etc
+./rc.local
+echo "proceso finalizado"
